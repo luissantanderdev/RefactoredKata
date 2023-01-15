@@ -17,62 +17,45 @@ export class GildedRose {
     this.items = items;
   }
 
-  updateQuality() {
+  // Anything but Aged Brie, Backstage passes to a TAFKAL80ETC concert, Sulfuras, Hand of Ragnaros and as long quality > 0 we decrement 
+  // Basically whe I derived is that quality of brie, concert tickets, and sulfuras doesnt decrease over time but any other item the quality does
+  // is set to zero if the sellIn is less than 0
+
+  // Example vest goes up in quality as time progresses 
+
+  // All items as long as there not sulfuras, hand of ragnaros seslls 
+
+  // Uncomment to toggle between Conjured Mana Line of code that works properly and comment to one with the bug to simulate the test 
+  // I left the one with the bug to simulate the typo and test case caught it. 
+
+  updateQuality(): Array<Item> {
 
       this.items.forEach((item, index) => {
-          console.log(item); 
+
+          // Remove Conjured Mana Cake item since it doesnt work properly from the batch (EDGE CASE IF IT WORKS)
+          // if (item.name == 'Conjured Mana Cake') return this.items.splice(index, 1); 
+
+          // Suppose there is was bug in the code right here (EDGE CASE IF THERE IS TYPO AKA BUG)
+          if (item.name == 'Conjured Manas Cake') return this.items.splice(index, 1); 
+
+          // Change item named foo to fixme if found in the batch 
           if (item.name === 'foo') item.name = 'fixme'; 
 
-          if (item.name != 'Sulfuras, Hand of Ragnaros') {
-              item.sellIn = item.sellIn - 1;
-          }
-      })
+          // Sell anything that is not sulfuras
+          if (item.name != 'Sulfuras, Hand of Ragnaros') item.sellIn = item.sellIn - 1;
 
+          // Decrement quality for items less than 0
+          if (item.sellIn < 0) {
+            if (item.name != 'Aged Brie' && item.name != 'Backstage passes to a TAFKAL80ETC concert' && item.name != 'Sulfuras, Hand of Ragnaros' && item.quality > 0)
+              item.quality = item.quality - 1
+            else 
+              item.quality -= item.quality;
+          } 
 
+          // As long as the sells are greater than 0 and quality is below 50 threshold then quality increases. 
+          if (item.sellIn >= 0 && item.quality < 50) item.quality = item.quality + 1; 
 
-  //   for (let i = 0; i < this.items.length; i++) {
-  //     if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-  //       if (this.items[i].quality > 0) {
-  //         if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-  //           this.items[i].quality = this.items[i].quality - 1
-  //         }
-  //       }
-  //     } else {
-  //       if (this.items[i].quality < 50) {
-  //         this.items[i].quality = this.items[i].quality + 1
-  //         if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
-  //           if (this.items[i].sellIn < 11) {
-  //             if (this.items[i].quality < 50) {
-  //               this.items[i].quality = this.items[i].quality + 1
-  //             }
-  //           }
-  //           if (this.items[i].sellIn < 6) {
-  //             if (this.items[i].quality < 50) {
-  //               this.items[i].quality = this.items[i].quality + 1
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-
-  //     if (this.items[i].sellIn < 0) {
-  //       if (this.items[i].name != 'Aged Brie') {
-  //         if (this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-  //           if (this.items[i].quality > 0) {
-  //             if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-  //               this.items[i].quality = this.items[i].quality - 1
-  //             }
-  //           }
-  //         } else {
-  //           this.items[i].quality = this.items[i].quality - this.items[i].quality
-  //         }
-  //       } else {
-  //         if (this.items[i].quality < 50) {
-  //           this.items[i].quality = this.items[i].quality + 1
-  //         }
-  //       }
-  //     }
-  //   }
+      });
 
     return this.items;
   }
